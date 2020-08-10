@@ -81,4 +81,19 @@ jobs:
           name: "Deploy Charm"
           command: |
             /snap/bin/juju deploy ./elasticsearch.charm --resource elasticsearch=./elasticsearch-7.8.1-amd64.deb
-
+      - run:
+          name: "Wait for deployment status"
+          no_output_timeout: 20m
+          command: |
+            export PATH=$PATH:/snap/bin
+            /snap/bin/juju-wait -w -t 1150
+      - run:
+          name: "Verify slurmrestd"
+          command: |
+            sudo apt install curl
+            curl -X GET "localhost:9200/?pretty"
+      - run:
+          name: "Show juju status"
+          command: |
+            /snap/bin/juju status
+          when: always
