@@ -5,8 +5,6 @@ set -e
 
 export PATH=$PATH:/snap/bin
 
-
-
 units=$(juju status elastcsearch --format json | jq -r '.applications | map_values(.units) | .[] | keys | .[]')
 
 for unit in $units; do

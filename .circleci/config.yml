@@ -101,4 +101,10 @@ jobs:
           name: "grab logs"
           command: |
             make grab-logs
+            mkdir -p /tmp/unit-logs
+            mv *.log /tmp/unit-logs/
+          when: always
+
+      - store_artifacts:
+          path: /tmp/unit-logs
           when: always
