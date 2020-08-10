@@ -8,10 +8,6 @@ workflows:
     jobs:
       - lint-charms:
           context: aws
-      - build-and-deploy-charms-on-lxd:
-          context: aws
-          requires:
-            - lint-charms
 jobs:
   lint-charms:
     docker:
