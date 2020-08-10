@@ -46,7 +46,7 @@ jobs:
       - run:
           name: "Build charms"
           command: |
-            make charms
+            charmcraft build
       - run:
           name: "Install LXD"
           command: |
@@ -60,3 +60,27 @@ jobs:
           command: |
             sudo apt-get purge juju
             sudo snap install juju --classic
+      - run:
+          name: "Install juju-wait"
+          command: |
+            sudo snap install juju-wait --classic
+      - run:
+          name: "Install jq"
+          command: |
+            sudo snap install jq
+      - run:
+          name: "Bootstrap Juju"
+          command: |
+            /snap/bin/juju bootstrap localhost
+            /snap/bin/juju model-config logging-config="<root>=DEBUG;<unit>=DEBUG"
+      - run:
+          name: "Get elasticsearch resource"
+          command: |
+            wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.8.1-amd64.debS
+             
+
+      - run:
+          name: "Deploy Charm"
+          command: |
+            juju deploy ./elasticsearch.charm --resource elasticsearch=./elasticsearch-7.8.1-amd64.deb
+
