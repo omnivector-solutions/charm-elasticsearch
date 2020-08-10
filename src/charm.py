@@ -1,7 +1,6 @@
-#! /usr/bin/env python3
-"""libraries needed for charm."""
+#!/usr/bin/python3
+"""ElasticsearchCharm."""
 import logging
-
 from ops.charm import CharmBase
 from ops.main import main
 from ops.model import (
@@ -18,7 +17,7 @@ from elasticsearch_interface import ElasticSearchInterface
 
 logger = logging.getLogger()
 
-class ElasticCharm(CharmBase):
+class ElasticsearchCharm(CharmBase):
     """Operator charm responsible for lifecycle operations of elasticsearch"""
     _stored = StoredState()
     def __init__(self, *args):
@@ -87,4 +86,4 @@ def open_port(start, end=None, protocol="tcp"):
     _modify_port(start, end, protocol=protocol, hook_tool="open-port")
 
 if __name__ == "__main__":
-    main(ElasticCharm)
+    main(ElasticsearchCharm)
