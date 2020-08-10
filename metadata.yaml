@@ -9,7 +9,7 @@ description: |
 tags:
     - slurm
 series:
-    - focal
+    - bionic
 provides:
   elasticsearch:
     interface: elasticsearch
