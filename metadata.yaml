@@ -1,0 +1,20 @@
+name: elasticsearch
+summary: elasticsearch 
+maintainers:
+    - Omnivector Solutions <Admin@omnivector.solutions>
+description: |
+    A nice long description of what the product does and any
+    high level information about how the charm provides the product,
+    on which platform, etc.
+tags:
+    - slurm
+series:
+    - focal
+provides:
+  elasticsearch:
+    interface: elasticsearch
+resources:
+  elasticsearch:
+    type: file
+    filename: elasticsearch-7.8.1-amd64.deb
+    description: elastic search tarbal
