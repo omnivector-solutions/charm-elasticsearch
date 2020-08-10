@@ -76,7 +76,7 @@ jobs:
       - run:
           name: "Get elasticsearch resource"
           command: |
-            wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.8.1-amd64.debS
+            wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.8.1-amd64.deb
       - run:
           name: "Deploy Charm"
           command: |
