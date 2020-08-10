@@ -1,3 +1,5 @@
+export PATH := /snap/bin:$(PATH)
+
 # TARGETS
 lint: ## Run linter
 	tox -e lint
