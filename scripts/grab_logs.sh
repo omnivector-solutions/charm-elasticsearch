@@ -7,7 +7,7 @@ export PATH=$PATH:/snap/bin
 
 
 
-units=$(juju status elastcsearch --format json | jq -r '.applications | map_values(.units) | .[] | keys | .[]')
+units=$(juju status elasticsearch --format json | jq -r '.applications | map_values(.units) | .[] | keys | .[]')
 
 for unit in $units; do
     juju scp $unit:/var/log/juju/unit-*.log .
