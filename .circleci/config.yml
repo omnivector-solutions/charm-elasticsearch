@@ -100,5 +100,5 @@ jobs:
       - run:
           name: "grab logs"
           command: |
-            make grab-log
+            make grab-logs
           when: always
