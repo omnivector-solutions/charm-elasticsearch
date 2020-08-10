@@ -97,3 +97,8 @@ jobs:
           command: |
             /snap/bin/juju status
           when: always
+      - run:
+          name: "grab logs"
+          command: |
+            make grab-log
+          when: always

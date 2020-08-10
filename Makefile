@@ -8,6 +8,8 @@ clean: ## Remove .tox and build dirs
 venv:
 	@mkdir -p venv
 	@pip3 install -U --target=./venv --requirement=./requirements.txt
+grab-logs:
+	@scripts/grab_logs.sh
 
 # Display target comments in 'make help'
 help: 
