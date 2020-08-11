@@ -109,7 +109,7 @@ jobs:
       - store_artifacts:
           path: /tmp/unit-logs
           when: always
-            - save_cache:
+      - save_cache:
           name: Cache built charms once we validate they successfully deploy.
           key: built-charm-{{ .Environment.CIRCLE_SHA1 }}
           paths:
