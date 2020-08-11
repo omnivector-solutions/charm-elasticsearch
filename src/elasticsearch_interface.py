@@ -23,9 +23,8 @@ class ElasticSearchInterface(Object):
     def __init(self, charm, relation_name):
         """Set the provide relation data."""
         super().__init__(charm, relation_name)
-        self.charm = charm
         self.framework.observe(
-            charm.on[self._relation_name].relation_created,
+            charm.on[self.relation_name].relation_created,
             self._on_relation_created
         )
 
