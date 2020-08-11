@@ -88,11 +88,6 @@ jobs:
             export PATH=$PATH:/snap/bin
             /snap/bin/juju-wait -w -t 1150
       - run:
-          name: "Verify slurmrestd"
-          command: |
-            sudo apt install curl
-            curl -X GET "localhost:9200/?pretty"
-      - run:
           name: "Show juju status"
           command: |
             /snap/bin/juju status
