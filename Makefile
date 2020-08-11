@@ -13,6 +13,9 @@ venv:
 grab-logs:
 	@scripts/grab_logs.sh
 
+push-charms-to-edge: ## Push charms to edge s3
+	@./scripts/push_charms.sh edge
+
 # Display target comments in 'make help'
 help: 
 	grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'

@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   aws-cli: circleci/aws-cli@1.2.1
+  slack: circleci/slack@3.4.2
 
 workflows:
   test-build-deploy:
@@ -12,6 +13,11 @@ workflows:
           context: aws
           requires:
             - lint-charms
+      - push-charms-to-s3:
+          context: aws
+          requires:
+            - build-and-deploy-charms-on-lxd
+
 jobs:
   lint-charms:
     docker:
@@ -103,3 +109,29 @@ jobs:
       - store_artifacts:
           path: /tmp/unit-logs
           when: always
+            - save_cache:
+          name: Cache built charms once we validate they successfully deploy.
+          key: built-charm-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - elasticsearch.charm
+      - slack/status:
+          fail_only: false
+
+  push-charms-to-s3:
+    executor: aws-cli/default
+    steps:
+      - checkout
+
+      - aws-cli/setup:
+          profile-name: default
+
+      - restore_cache:
+          name: Restore the charms from the cache to be pushed to s3
+          key: built-charm-{{ .Environment.CIRCLE_SHA1 }}
+
+      - run:
+          name: "Push charms to s3"
+          command: |
+            make push-charms-to-edge
+      - slack/status:
+          fail_only: false
