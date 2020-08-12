@@ -6,13 +6,31 @@ from pathlib import Path
 import socket
 import subprocess
 
-from elasticsearch_interface import ElasticSearchInterface
 from jinja2 import Environment, FileSystemLoader
 from ops.charm import CharmBase
+from ops.framework import Object
 from ops.main import main
 from ops.model import ActiveStatus
 
+
 logger = logging.getLogger()
+
+
+class ElasticsearchProvides(Object):
+    """Provide host."""
+
+    def __init__(self, charm, relation_name):
+        """Set data on relation created."""
+        super().__init__(charm, relation_name)
+
+        self.framework.observe(
+            charm.on[relation_name].relation_created,
+            self.on_relation_created
+        )
+
+    def on_relation_created(self, event):
+        """Set host on relation created."""
+        event.relation.data[self.model.unit]['host'] = socket.gethostname().split(".")[0]
 
 
 class ElasticsearchCharm(CharmBase):
@@ -21,7 +39,7 @@ class ElasticsearchCharm(CharmBase):
     def __init__(self, *args):
         """Initialize charm, configure states, and events to observe."""
         super().__init__(*args)
-        self.elastic_search = ElasticSearchInterface(self, "elasticsearch")
+        self.elastic_search = ElasticsearchProvides(self, "elasticsearch")
         event_handler_bindings = {
             self.on.install: self._on_install,
             self.on.start: self._on_start,
