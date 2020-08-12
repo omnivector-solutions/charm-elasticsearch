@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#!/usr/bin/python3
 """ElasticsearchProvidesRelation."""
 import socket
 
@@ -24,10 +24,12 @@ class ElasticSearchInterface(Object):
         """Set the provide relation data."""
         super().__init__(charm, relation_name)
         self.framework.observe(
-            charm.on[self.relation_name].relation_created,
-            self._on_relation_created
+            charm.on[relation_name].relation_joined,
+            self._on_relation_joined
         )
 
-        def _on_relation_created(self, event):
+        def _on_relation_joined(self, event):
             """Set data on relation created."""
-            event.relation.data[self.model.unit]['hostname'] = socket.gethostname().split(".")[0]
+            event.relation.data[self.model.unit]['hostname'] = "foo"
+            
+            #event.relation.data[self.model.unit]['hostname'] = socket.gethostname().split(".")[0]
