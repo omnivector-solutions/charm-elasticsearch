@@ -53,6 +53,9 @@ class ElasticsearchCharm(CharmBase):
             ["sudo", "dpkg", "-i", self.model.resources.fetch("elasticsearch")]
         )
         open_port(9200)
+        host_name = socket.gethostname()
+        ctxt = {"hostname": host_name}
+        write_config(ctxt)
         self.unit.status = ActiveStatus("Elasticsearch Installed")
 
     def _on_start(self, event):
