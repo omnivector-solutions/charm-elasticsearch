@@ -52,9 +52,6 @@ class ElasticsearchCharm(CharmBase):
         subprocess.run(
             ["sudo", "dpkg", "-i", self.model.resources.fetch("elasticsearch")]
         )
-        host_name = socket.gethostname()
-        ctxt = {"hostname": host_name}
-        write_config(ctxt)
         open_port(9200)
         self.unit.status = ActiveStatus("Elasticsearch Installed")
 
@@ -98,7 +95,7 @@ def _modify_port(start=None, end=None, protocol='tcp', hook_tool="open-port"):
 
 
 def open_port(start, end=None, protocol="tcp"):
-    """Open port in operator framework."""
+    """Open port in operator charm."""
     _modify_port(start, end, protocol=protocol, hook_tool="open-port")
 
 
