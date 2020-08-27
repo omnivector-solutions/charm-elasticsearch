@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """ElasticsearchCharm."""
 import logging
-import os
 from pathlib import Path
 import socket
 import subprocess
@@ -122,6 +121,7 @@ class ElasticsearchCharm(CharmBase):
         self.elasticsearch_peer = ElasticCluster(self, "elastic-cluster")
         self.stored.set_default(
             elastic_config=None,
+            host=None,
         )
 
         event_handler_bindings = {
@@ -139,7 +139,7 @@ class ElasticsearchCharm(CharmBase):
         )
         open_port(9200)
         host_name = socket.gethostname()
-        ctxt = {"hostname": host_name}
+        ctxt = {"host": self.stored.host}
         write_config(ctxt)
         self.unit.status = ActiveStatus("Elasticsearch Installed")
 
