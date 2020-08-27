@@ -22,7 +22,7 @@ http.port: 9200
 
 discovery.type: single-node
 
-
+{% if nodes %}
 discovery.seed_hosts:
 {% for node in nodes %}
   - {{node.host}}
@@ -32,3 +32,4 @@ cluster.initial_master_nodes:
 {% for node in nodes %}
   - {{node.name}}
 {% endfor %}
+{% endif  %}

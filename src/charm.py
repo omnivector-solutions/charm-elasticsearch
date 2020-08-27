@@ -138,7 +138,7 @@ class ElasticsearchCharm(CharmBase):
             ["sudo", "dpkg", "-i", self.model.resources.fetch("elasticsearch")]
         )
         open_port(9200)
-        host_name = socket.gethostname()
+        self.stored.host = socket.gethostname()
         ctxt = {"host": self.stored.host}
         write_config(ctxt)
         self.unit.status = ActiveStatus("Elasticsearch Installed")
@@ -151,7 +151,10 @@ class ElasticsearchCharm(CharmBase):
     def _on_node_added(self, event):
         logger.debug("_on_node_added event going off")
         write_config(
-            { 'nodes': self.stored.elastic_config }
+            {
+            'host': self.stored.host,
+            'nodes': self.stored.elastic_config
+            }
         )
         logger.debug(self.stored.elastic_config.__dict__)
 
