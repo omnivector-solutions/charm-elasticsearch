@@ -7,16 +7,15 @@ import subprocess
 
 from jinja2 import Environment, FileSystemLoader
 from ops.charm import CharmBase
-from ops.framework import Object
+from ops.framework import (
+    EventBase,
+    EventSource,
+    Object,
+    ObjectEvents,
+    StoredState,
+)
 from ops.main import main
 from ops.model import ActiveStatus
-from ops.framework import (
-    ObjectEvents,
-    Object,
-    EventSource,
-    EventBase,
-    StoredState
-)
 
 logger = logging.getLogger()
 
@@ -37,12 +36,16 @@ class ElasticsearchProvides(Object):
         """Set host on relation created."""
         event.relation.data[self.model.unit]['host'] = socket.gethostname().split(".")[0]
 
+
 class NodeAddedEvent(EventBase):
     """Emitted when a node joins the elasticsearch cluster."""
 
+
 class ElasticEvents(ObjectEvents):
     """Interface events."""
+
     node_added = EventSource(NodeAddedEvent)
+
 
 class ElasticCluster(ObjectEvents):
     """Peer relation interface for elasticsearch."""
@@ -58,13 +61,13 @@ class ElasticCluster(ObjectEvents):
         event_handler_bindings = {
             charm.on[relation_name].relation_created:
             self._on_relation_created,
-            
+
             charm.on[relation_name].relation_joined:
             self._on_relation_joined,
-            
+
             charm.on[relation_name].relation_changed:
             self._on_relation_changed,
-            
+
             charm.on[relation_name].relation_departed:
             self._on_relation_departed,
 
@@ -74,10 +77,9 @@ class ElasticCluster(ObjectEvents):
         for event, handler in event_handler_bindings.items():
             self.framework.observe(event, handler)
 
-    
     def _on_relation_created(self, event):
         logger.debug("################ LOGGING RELATION CREATED ####################")
-        #addreses = event.relation.data[self.model.unit]['ingress-address']
+        # addreses = event.relation.data[self.model.unit]['ingress-address']
         event.relation.data[self.model.unit]['node-name'] = socket.gethostname()
 
     def _on_relation_joined(self, event):
@@ -101,7 +103,7 @@ class ElasticCluster(ObjectEvents):
         self.charm.stored.elastic_config = nodes_info
         logger.debug(f'hosts: {nodes_info}')
         self.on.node_added.emit()
-    
+
     def _on_relation_departed(self, event):
         logger.debug("################ LOGGING RELATION DEPARTED ####################")
 
@@ -150,12 +152,10 @@ class ElasticsearchCharm(CharmBase):
 
     def _on_node_added(self, event):
         logger.debug("_on_node_added event going off")
-        write_config(
-            {
+        write_config({
             'host': self.stored.host,
             'nodes': self.stored.elastic_config
-            }
-        )
+        })
         logger.debug(self.stored.elastic_config.__dict__)
 
 
