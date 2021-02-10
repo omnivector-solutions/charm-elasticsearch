@@ -13,8 +13,11 @@ charmcraft build
 
 Deploy
 -----
+This charm has you supply the deb version of elasticsearch. It can be downloaded from:
+https://www.elastic.co/downloads/elasticsearch
+
 ```bashrc
-juju deploy ./elasticsearch.charm
+juju deploy ./elasticsearch.charm --resource elasticsearch=./path/to/elasticsearch.deb
 ```
 
 Interfaces
